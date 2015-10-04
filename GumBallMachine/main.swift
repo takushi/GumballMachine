@@ -22,5 +22,22 @@ gumballMachine.insertQuarter()
 gumballMachine.turnCrank()
 gumballMachine.insertQuarter()
 gumballMachine.turnCrank()
+gumballMachine.insertQuarter()
+gumballMachine.turnCrank()
+gumballMachine.insertQuarter()
+gumballMachine.turnCrank()
+
+print(gumballMachine.toString())
+
+gumballMachine.refill(3)
+
+print(gumballMachine.toString())
+
+gumballMachine.insertQuarter()
+gumballMachine.turnCrank()
+gumballMachine.insertQuarter()
+gumballMachine.turnCrank()
+gumballMachine.insertQuarter()
+gumballMachine.turnCrank()
 
 print(gumballMachine.toString())

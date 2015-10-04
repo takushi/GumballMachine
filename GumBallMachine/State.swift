@@ -8,80 +8,48 @@
 
 import Foundation
 
-/**
-*  状態
-*/
-protocol State {
+/// 基本の状態
+class State {
   /**
   25セントを投入します
   */
-  func insertQuarter()
-  
-  /**
-  25セントを返却します
-  */
-  func ejectQuarter()
-  
-  /**
-  クランクを回します
-  */
-  func turnCrank()
-  
-  /**
-  ガムボールを販売します
-  */
-  func dispense()
-  
-  /**
-  ガムボールマシンの状態を出力します
-  
-  - returns: ガムボールマシンの状態
-  */
-  func toString() -> String
-}
-
-/// ガムボールなし
-class SoldOutState: State {
-  /// ガムボールマシン
-  let gumballMachine: GumballMachine
-  
-  /**
-  イニシャライザ
-  
-  - parameter gumballMachine: ガムボールマシン
-  
-  - returns: ガムボールなしの状態
-  */
-  init(gumballMachine: GumballMachine) {
-    self.gumballMachine = gumballMachine
-  }
-  
-  /**
-  25セントを投入します
-  */
-  func insertQuarter() {
-    print("25セントを投入することはできません。このマシンは売り切れです")
+  func insertQuarter() -> Bool {
+    print("25セントを投入することはできません")
+    return false
   }
   
   /**
   25セントを返却します
   */
-  func ejectQuarter() {
-    print("返金できません。まだ25セントを投入していません")
+  func ejectQuarter() -> Bool {
+    print("返金できません")
+    return false
   }
   
   /**
   クランクを回します
   */
-  func turnCrank() {
+  func turnCrank() -> Bool {
     print("クランクを回しましたが、ガムボールがありません")
+    return false
+  }
+
+  /**
+  ガムボールを販売します
+  
+  - returns: 販売するガムボールの数
+  */
+  func dispense() -> Int {
+    print("販売するガムボールはありません")
+    return 0
   }
   
   /**
-  ガムボールを販売します
+  ガムボールを補充します
   */
-  func dispense() {
-    print("販売するガムボールはありません")
+  func refill(count:Int) -> Bool {
+    print("まだガムボールは補充しなくても大丈夫です")
+    return false
   }
   
   /**
@@ -94,49 +62,14 @@ class SoldOutState: State {
   }
 }
 
-/// 25セント未受領
-class NoQuarterState: State {
-  /// ガムボールマシン
-  let gumballMachine: GumballMachine
-  
+/// ガムボールなし
+class SoldOutState: State {
   /**
-  イニシャライザ
-  
-  - parameter gumballMachine: ガムボールマシン
-  
-  - returns: 25セント未受領の状態
+  ガムボールを補充します
   */
-  init(gumballMachine: GumballMachine) {
-    self.gumballMachine = gumballMachine
-  }
-  
-  /**
-  25セントを投入します
-  */
-  func insertQuarter() {
-    print("25セントを投入しました")
-    self.gumballMachine.state = self.gumballMachine.hasQuarterState
-  }
-  
-  /**
-  25セントを返却します
-  */
-  func ejectQuarter() {
-    print("25セントを投入していません")
-  }
-  
-  /**
-  クランクを回します
-  */
-  func turnCrank() {
-    print("クランクを回しましたが、25セントを投入していません")
-  }
-  
-  /**
-  ガムボールを販売します
-  */
-  func dispense() {
-    print("まず支払いをする必要があります")
+  override func refill(count: Int) -> Bool {
+    print("ガムボールを\(count)個補充しました")
+    return true
   }
   
   /**
@@ -144,60 +77,47 @@ class NoQuarterState: State {
   
   - returns: ガムボールマシンの状態
   */
-  func toString() -> String {
+  override func toString() -> String {
+    return "このマシンは売り切れです"
+  }
+}
+
+/// 25セント未受領
+class NoQuarterState: State {
+  /**
+  25セントを投入します
+  */
+  override func insertQuarter() -> Bool {
+    print("25セントを投入しました")
+    return true
+  }
+
+  /**
+  ガムボールマシンの状態を出力します
+  
+  - returns: ガムボールマシンの状態
+  */
+  override func toString() -> String {
     return "マシンは25セントが投入されるのを待っています"
   }
 }
 
 /// 25セント受領
 class HasQuarterState: State {
-  /// ガムボールマシン
-  let gumballMachine: GumballMachine
-  
-  /**
-  イニシャライザ
-  
-  - parameter gumballMachine: ガムボールマシン
-  
-  - returns: 25セント受領の状態
-  */
-  init(gumballMachine: GumballMachine) {
-    self.gumballMachine = gumballMachine
-  }
-  
-  /**
-  25セントを投入します
-  */
-  func insertQuarter() {
-    print("もう一度25セントを投入することはできません")
-  }
-  
   /**
   25セントを返却します
   */
-  func ejectQuarter() {
+  override func ejectQuarter() -> Bool {
     print("25セントを返却しました")
-    self.gumballMachine.state = self.gumballMachine.noQuarterState
+    return true
   }
   
   /**
   クランクを回します
   */
-  func turnCrank() {
+  override func turnCrank() -> Bool {
     print("クランクを回しました……")
-    let winner = arc4random() % 10
-    if winner == 0 && self.gumballMachine.count > 1 {
-      self.gumballMachine.state = self.gumballMachine.winnerState
-    } else {
-      self.gumballMachine.state = self.gumballMachine.soldState
-    }
-  }
-  
-  /**
-  ガムボールを販売します
-  */
-  func dispense() {
-    print("販売するガムボールはありません")
+    return true
   }
   
   /**
@@ -205,59 +125,18 @@ class HasQuarterState: State {
   
   - returns: ガムボールマシンの状態
   */
-  func toString() -> String {
+  override func toString() -> String {
     return "このマシンはクランクを回されるのを待っています"
   }
 }
 
 /// ガムボール販売
 class SoldState: State {
-  /// ガムボールマシン
-  let gumballMachine: GumballMachine
-  
-  /**
-  イニシャライザ
-  
-  - parameter gumballMachine: ガムボールマシン
-  
-  - returns: ガムボール販売
-  */
-  init(gumballMachine: GumballMachine) {
-    self.gumballMachine = gumballMachine
-  }
-  
-  /**
-  25セントを投入します
-  */
-  func insertQuarter() {
-    print("お待ちください。すでにガムボールを出しています")
-  }
-  
-  /**
-  25セントを返却します
-  */
-  func ejectQuarter() {
-    print("申し訳ありません。すでにクランクを回しています")
-  }
-  
-  /**
-  クランクを回します
-  */
-  func turnCrank() {
-    print("2回回してもガムボールをもう1つ手に入れることはできません！")
-  }
-  
   /**
   ガムボールを販売します
   */
-  func dispense() {
-    self.gumballMachine.releaseBall()
-    if self.gumballMachine.count > 0 {
-      self.gumballMachine.state = self.gumballMachine.noQuarterState
-    } else {
-      print("おっと、ガムボールがなくなりました！")
-      self.gumballMachine.state = self.gumballMachine.soldOutState
-    }
+  override func dispense() -> Int {
+    return 1
   }
   
   /**
@@ -265,66 +144,19 @@ class SoldState: State {
   
   - returns: ガムボールマシンの状態
   */
-  func toString() -> String {
+  override func toString() -> String {
     return "このマシンはガムボールを販売しました"
   }
 }
 
 /// ガムボールが的中
 class WinnerState: State {
-  /// ガムボールマシン
-  let gumballMachine: GumballMachine
-  
-  /**
-  イニシャライザ
-  
-  - parameter gumballMachine: ガムボールマシン
-  
-  - returns: ガムボールが的中
-  */
-  init(gumballMachine: GumballMachine) {
-    self.gumballMachine = gumballMachine
-  }
-  
-  /**
-  25セントを投入します
-  */
-  func insertQuarter() {
-    print("お待ちください。すでにガムボールを出しています")
-  }
-  
-  /**
-  25セントを返却します
-  */
-  func ejectQuarter() {
-    print("申し訳ありません。すでにクランクを回しています")
-  }
-  
-  /**
-  クランクを回します
-  */
-  func turnCrank() {
-    print("2回回してもガムボールをもう1つ手に入れることはできません！")
-  }
-  
   /**
   ガムボールを販売します
   */
-  func dispense() {
+  override func dispense() -> Int {
     print("当たりです！25セントで2つのガムボールがもらえます")
-    
-    self.gumballMachine.releaseBall()
-    if self.gumballMachine.count == 0 {
-      self.gumballMachine.state = self.gumballMachine.soldOutState
-    } else {
-      self.gumballMachine.releaseBall()
-      if self.gumballMachine.count > 0 {
-        self.gumballMachine.state = self.gumballMachine.noQuarterState
-      } else {
-        print("おっと、ガムボールがなくなりました！")
-        self.gumballMachine.state = self.gumballMachine.soldOutState
-      }
-    }
+    return 2
   }
   
   /**
@@ -332,7 +164,7 @@ class WinnerState: State {
   
   - returns: ガムボールマシンの状態
   */
-  func toString() -> String {
+  override func toString() -> String {
     return "このマシンはガムボールを販売しました"
   }
 }
