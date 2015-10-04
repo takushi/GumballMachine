@@ -19,23 +19,6 @@ gumballMachine.turnCrank()
 print(gumballMachine.toString())
 
 gumballMachine.insertQuarter()
-gumballMachine.ejectQuarter()
-gumballMachine.turnCrank()
-
-print(gumballMachine.toString())
-
-gumballMachine.insertQuarter()
-gumballMachine.turnCrank()
-gumballMachine.insertQuarter()
-gumballMachine.turnCrank()
-gumballMachine.ejectQuarter()
-
-print(gumballMachine.toString())
-
-gumballMachine.insertQuarter()
-gumballMachine.insertQuarter()
-gumballMachine.turnCrank()
-gumballMachine.insertQuarter()
 gumballMachine.turnCrank()
 gumballMachine.insertQuarter()
 gumballMachine.turnCrank()
