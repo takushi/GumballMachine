@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C89C02B1BC108D000A349FE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C89C02A1BC108D000A349FE /* main.swift */; };
+		1C89C0321BC1097000A349FE /* GumballMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C89C0311BC1097000A349FE /* GumballMachine.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		1C89C0271BC108D000A349FE /* GumBallMachine */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = GumBallMachine; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C89C02A1BC108D000A349FE /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		1C89C0311BC1097000A349FE /* GumballMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GumballMachine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 			isa = PBXGroup;
 			children = (
 				1C89C02A1BC108D000A349FE /* main.swift */,
+				1C89C0311BC1097000A349FE /* GumballMachine.swift */,
 			);
 			path = GumBallMachine;
 			sourceTree = "<group>";
@@ -118,6 +121,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C89C0321BC1097000A349FE /* GumballMachine.swift in Sources */,
 				1C89C02B1BC108D000A349FE /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
